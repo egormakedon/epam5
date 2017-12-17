@@ -20,38 +20,35 @@ public class FreeCashBoxReader {
 
     public void read(String filename, List<Cashbox> cashboxList, List<Visitor> visitorList) throws IncorrectFileException {
         File file = new File("in/" + filename);
+
         if (!file.exists()) {
             throw new IncorrectFileException(filename + " hasn't found");
         }
+
         LOGGER.log(Level.INFO, filename + " has found");
+
         Scanner scanner = null;
-        int cashboxAmount = 0;
         try {
             scanner = new Scanner(new File("in/" + filename));
-            if (!scanner.hasNextLine()) {
-                throw new IncorrectFileException(filename + " - has incorrect data");
-            }
-            String dataLine = scanner.nextLine();
-            if (DataValidator.validateCashboxAmount(dataLine)) {
-                cashboxAmount = DataParser.parse(dataLine);
-                Constant.CASHBOX_AMOUNT.setCashboxAmount(cashboxAmount);
-                for (int index = 0; index < cashboxAmount; index++) {
-                    Cashbox cashbox = new Cashbox(index);
-                    cashboxList.add(cashbox);
-                }
-            } else {
-                throw new IncorrectFileException(dataLine + " - has incorrect data");
-            }
+            StringBuilder sb = new StringBuilder();
+
             while (scanner.hasNextLine()) {
-                dataLine = scanner.nextLine();
-                if (DataValidator.validateVisitor(dataLine, cashboxAmount)) {
-                    int cashboxNumber = DataParser.parse(dataLine);
-                    Visitor visitor = new Visitor(cashboxNumber);
-                    visitorList.add(visitor);
-                } else {
-                    LOGGER.log(Level.ERROR, dataLine + " - has incorrect data");
-                }
+                sb.append(scanner.nextLine());
             }
+
+            if (!DataValidator.validate(sb.toString())) {
+                throw new IncorrectFileException(sb.toString() + " - has incorrect data");
+            }
+
+            int cashboxAmount = DataParser.parse(sb.toString(), Constant.CASHBOX_AMOUNT);
+            int cashboxCapacity = DataParser.parse(sb.toString(), Constant.CASHBOX_CAPACITY);
+            int visitorAmount = DataParser.parse(sb.toString(), Constant.VISITOR_AMOUNT);
+
+            Constant.CASHBOX_AMOUNT.set(cashboxAmount);
+            Constant.CASHBOX_CAPACITY.set(cashboxCapacity);
+            Constant.VISITOR_AMOUNT.set(visitorAmount);
+
+
         } catch (FileNotFoundException e) {
             throw new IncorrectFileException("unknown error", e);
         } finally {
