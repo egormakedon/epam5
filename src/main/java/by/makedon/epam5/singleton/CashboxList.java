@@ -1,5 +1,9 @@
 package by.makedon.epam5.singleton;
 
+import by.makedon.epam5.entity.Cashbox;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CashboxList {
@@ -18,5 +22,23 @@ public class CashboxList {
         return instance;
     }
 
+    private List<Cashbox> cashboxList = new ArrayList<Cashbox>();
 
+    public void add(Cashbox cashbox) {
+        lock.lock();
+        try {
+            cashboxList.add(cashbox);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public Cashbox get(int index) {
+        lock.lock();
+        try {
+            return cashboxList.get(index);
+        } finally {
+            lock.unlock();
+        }
+    }
 }
