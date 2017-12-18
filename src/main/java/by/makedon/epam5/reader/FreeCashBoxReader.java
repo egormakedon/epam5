@@ -45,10 +45,6 @@ public class FreeCashBoxReader {
             int cashboxCapacity = DataParser.parse(sb.toString(), Constant.CASHBOX_CAPACITY);
             int visitorAmount = DataParser.parse(sb.toString(), Constant.VISITOR_AMOUNT);
 
-            Constant.CASHBOX_AMOUNT.set(cashboxAmount);
-            Constant.CASHBOX_CAPACITY.set(cashboxCapacity);
-            Constant.VISITOR_AMOUNT.set(visitorAmount);
-
             for (int index = 0; index < cashboxAmount; index++) {
                 Cashbox cashbox = new Cashbox(cashboxCapacity);
                 cashboxList.add(cashbox);
