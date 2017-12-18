@@ -26,7 +26,7 @@ public class Cashbox extends Thread implements State {
     public void run() {
         while (true) {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(3);
                 Visitor visitor = visitorQueue.take();
                 System.out.println(visitor.toString() + " out from " + this.toString());
             } catch (InterruptedException e) {
@@ -39,6 +39,18 @@ public class Cashbox extends Thread implements State {
     public void preOrder(Visitor visitor) {
         visitorQueue.remove(visitor);
         System.out.println(visitor.toString() + " out from " + this.toString() + " without queue");
+    }
+
+    @Override
+    public void changeCashbox(Visitor visitor) {
+        put(visitor);
+        System.out.println(visitor.toString() + " join to " + this.toString());
+    }
+
+    @Override
+    public void removeFromCashbox(Visitor visitor) {
+        visitorQueue.remove(visitor);
+        System.out.println(visitor.toString() + " remove from " + this.toString());
     }
 
     @Override

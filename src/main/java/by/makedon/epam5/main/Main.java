@@ -32,6 +32,7 @@ public class Main {
             @Override
             public void run() {
                 for (int index = 0; index < visitorList.size() / 2; index++) {
+                    visitorList.get(index).setCashboxState(cashboxList.get(0));
                     cashboxList.get(0).put(visitorList.get(index));
                 }
             }
@@ -42,6 +43,7 @@ public class Main {
             @Override
             public void run() {
                 for (int index = visitorList.size() / 2; index < visitorList.size(); index++) {
+                    visitorList.get(index).setCashboxState(cashboxList.get(1));
                     cashboxList.get(1).put(visitorList.get(index));
                 }
             }
@@ -52,11 +54,28 @@ public class Main {
             @Override
             public void run() {
                 try {
-                    TimeUnit.SECONDS.sleep(2);
+                    TimeUnit.SECONDS.sleep(4);
                 } catch (InterruptedException e) {
                     LOGGER.log(Level.WARN, e);
                 }
-                cashboxList.get(0).preOrder(visitorList.get(5));
+                visitorList.get(4).preOrder();
+                visitorList.get(8).preOrder();
+                visitorList.get(12).preOrder();
+            }
+
+        }.start();
+
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    TimeUnit.SECONDS.sleep(6);
+                } catch (InterruptedException e) {
+                    LOGGER.log(Level.WARN, e);
+                }
+                visitorList.get(16).changeCashbox(cashboxList.get(2));
+                visitorList.get(17).changeCashbox(cashboxList.get(2));
+                visitorList.get(18).changeCashbox(cashboxList.get(2));
             }
 
         }.start();

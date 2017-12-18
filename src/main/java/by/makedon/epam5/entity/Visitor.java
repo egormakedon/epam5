@@ -22,7 +22,17 @@ public class Visitor {
     }
 
     public void preOrder() {
-        cashboxState.preOrder(this);
+        if (cashboxState != null) {
+            cashboxState.preOrder(this);
+        }
+    }
+
+    public void changeCashbox(State c) {
+        if (cashboxState != null) {
+            cashboxState.removeFromCashbox(this);
+            setCashboxState(c);
+            this.cashboxState.changeCashbox(this);
+        }
     }
 
     private static void incrementCounter() {
