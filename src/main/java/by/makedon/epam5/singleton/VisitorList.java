@@ -41,4 +41,8 @@ public class VisitorList {
             lock.unlock();
         }
     }
+
+    public int size() {
+        return visitorList.size();
+    }
 }

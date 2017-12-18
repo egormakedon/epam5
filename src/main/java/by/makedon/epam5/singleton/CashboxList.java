@@ -41,4 +41,8 @@ public class CashboxList {
             lock.unlock();
         }
     }
+
+    public int size() {
+        return cashboxList.size();
+    }
 }
